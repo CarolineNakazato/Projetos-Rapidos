@@ -17,6 +17,7 @@ void inserirFinal(int n, tno **inicio);  // insere no final da lista
 void inserirK(int n, int posicao, tno **inicio); //insere valor na posicao desejada
 void inserirDepois(int x, int n, tno **inicio);  // insere um novo valor depois de outro valor desejado
 void inserirAntes(int x, int n, tno **inicio);   // insere um novo valor antes de outro valor desejado
+void inserirOrdenado(int n, tno **inicio); // insere um valor na lista de forma crescente
 
 void excluirInicio(tno **inicio); //exclui um elemento do inicio
 void excluirFinal(tno **inicio);  //exclui um elemento do fim
@@ -39,6 +40,7 @@ void concatena(tno **A, tno *B);	 // junta a lista B com a lista A
 int iguais(tno *A, tno *B);			 // verifica se as listas sao iguais retorna 1 se sim e 0 se nao
 tno *uniao(tno *A, tno *B);			 //faz a uniao entr duas listas (exclui valores repetidos)
 tno *interseccao(tno *A, tno *B);	 // faz a interseccao de duas listas (exclui os valores diferentes)
+void ordenar(tno **inicio);
 
 void main() {
 	tno *lista = NULL;
@@ -47,6 +49,24 @@ void main() {
 	tno *listaInter = NULL;
 	int n = 10;
 
+
+	/**inserirInicio(2, &lista);
+	inserirFinal(4, &lista);
+	printf("-----lista Original -----\n");
+	imprime(lista);
+
+	inserirOrdenado(1, &lista);
+	printf("-----lista 1 ele-----\n");
+	imprime(lista);
+
+
+	inserirOrdenado(3, &lista);
+
+	printf("-----lista 2 ele-----\n");
+	imprime(lista);
+
+	inserirOrdenado(5, &lista);
+	**/
 	inserirInicio(n, &lista);
 	inserirInicio(15, &lista);
 	inserirInicio(16, &lista);
@@ -57,6 +77,14 @@ void main() {
 	inserirK(3, 0, &lista);
 	inserirK(5, 1, &lista);
 
+	printf("-----lista-----\n");
+	imprime(lista);
+
+	ordenar(&lista);
+
+	printf("-----lista ordenada-----\n");
+	imprime(lista);
+	/**
 	inserirDepois(6, 2, &lista);
 	inserirDepois(7, 15, &lista);
 	inserirDepois(8, 0, &lista);
@@ -65,33 +93,32 @@ void main() {
 	inserirAntes(11, 16, &lista);
 	inserirAntes(9, 99, &lista);
 
-	//imprimeInicio(lista);
-	//imprimeFinal(lista);
+	imprimeInicio(lista);
+	imprimeFinal(lista);
+
 	imprimeK(4, lista);
 	imprimeK(11, lista);
 	imprimeK(12, lista);
 
 	if (existe(n, lista) == 1) {
-		printf("o valor %d existe na lista.\n", n);
+	printf("o valor %d existe na lista.\n", n);
 	}
 	else {
-		printf("o valor %d nao existe na lista.\n", n);
+	printf("o valor %d nao existe na lista.\n", n);
 	}
 
 	if (existe(8, lista) == 1) {
-		printf("o valor %d existe na lista.\n", 8);
+	printf("o valor %d existe na lista.\n", 8);
 	}
 	else {
-		printf("o valor %d nao existe na lista.\n", 8);
+	printf("o valor %d nao existe na lista.\n", 8);
 	}
-
-	imprime(lista);
 
 	copia(lista, &novaLista);
 	printf("-----lista nova-----\n");
 	imprime(novaLista);
-	
-	/**
+
+
 	listaUnida = uniao(lista, novaLista);
 	printf("-----lista Unida-----\n");
 	imprime(listaUnida);
@@ -102,7 +129,7 @@ void main() {
 	listaUnida = uniao(lista, novaLista);
 	printf("-----lista Unida-----\n");
 	imprime(listaUnida);
-	**/
+
 
 	listaInter = interseccao(lista, novaLista);
 	printf("-----lista Interseccao-----\n");
@@ -116,10 +143,10 @@ void main() {
 	imprime(listaInter);
 
 	if (iguais(lista, novaLista) == 1) {
-		printf("As listas sao iguais.\n", n);
+	printf("As listas sao iguais.\n", n);
 	}
 	else {
-		printf("As listas sao diferentes.\n", n);
+	printf("As listas sao diferentes.\n", n);
 	}
 
 	inverte(&novaLista);
@@ -127,17 +154,16 @@ void main() {
 	imprime(novaLista);
 
 	if (iguais(lista, novaLista) == 1) {
-		printf("As listas sao iguais.\n", n);
+	printf("As listas sao iguais.\n", n);
 	}
 	else {
-		printf("As listas sao diferentes.\n", n);
+	printf("As listas sao diferentes.\n", n);
 	}
 
 	concatena(&lista, novaLista);
 	printf("-----lista concatenada-----\n");
 	imprime(lista);
 
-	/**
 	printf("exclui\n");
 	excluirInicio(&lista);
 	excluirFinal(&lista);
@@ -149,10 +175,11 @@ void main() {
 	printf("valor excluido = %d\n", excluirAntes(1, &lista));
 	printf("valor excluido = %d\n", excluirAntes(23, &lista));
 	imprime(lista);
-	**/
+
 	printf("tamanho = %d\n", tamanho(lista));
 	printf("soma = %d\n", soma(lista));
 
+	**/
 	system("pause");
 
 }
@@ -166,13 +193,15 @@ void inserirInicio(int n, tno **inicio) {
 		novo->info = n;
 		novo->prox = (*inicio);
 		(*inicio) = novo;
-		//printf("%d\n", novo->info);
+		//printf("inserir inicio n = %d\n", novo->info);
 	}
 
 
 }
 void inserirFinal(int n, tno **inicio) {
 	if ((*inicio) != NULL) {
+		//printf("entrando %d\n", n);
+
 		if ((*inicio)->prox != NULL) {
 			inserirFinal(n, &((*inicio)->prox));
 		}
@@ -185,7 +214,7 @@ void inserirFinal(int n, tno **inicio) {
 				novo->info = n;
 				novo->prox = NULL;
 				(*inicio)->prox = novo;
-				//printf("passou %d\n", novo->info);
+				//printf("passou insere final %d\n", novo->info);
 			}
 		}
 	}
@@ -454,7 +483,7 @@ void concatena(tno **A, tno *B) {
 		inserirFinal(B->info, &(*A));
 		B = B->prox;
 	}
-	
+
 }
 
 int iguais(tno *A, tno *B) {
@@ -480,7 +509,7 @@ tno *uniao(tno *A, tno *B) {
 	copia(A, &ret);
 	while (B != NULL) {
 		if (existe(B->info, ret) == 0) {
-		inserirFinal(B->info, &ret);
+			inserirFinal(B->info, &ret);
 		}
 		B = B->prox;
 	}
@@ -496,4 +525,40 @@ tno *interseccao(tno *A, tno *B) {
 		B = B->prox;
 	}
 	return ret;
+}
+
+void inserirOrdenado(int n, tno **inicio) {
+	int cont = 0;
+	tno *aux = NULL;
+	copia((*inicio), &aux);
+	if ((*inicio) == NULL) {
+		inserirInicio(n, &(*inicio));
+	}
+	else {
+		if (n < (aux)->info) {
+			inserirInicio(n, &(*inicio));
+		}
+		else {
+			while ((aux)->prox != NULL) {
+				if ((n >(aux)->info) && (n < (aux->prox)->info)) {
+					cont++;
+					inserirDepois(n, (aux)->info, &(*inicio));
+				}
+
+				(aux) = (aux)->prox;
+			}
+			if (cont == 0) {
+				inserirFinal(n, &(*inicio));
+			}
+		}
+	}
+}
+void ordenar(tno **inicio) {
+	tno *aux = NULL;
+	while ((*inicio) != NULL) {
+		inserirOrdenado((*inicio)->info, &(aux));
+		(*inicio) = (*inicio)->prox;
+
+	}
+	copia(aux, &(*inicio));
 }
