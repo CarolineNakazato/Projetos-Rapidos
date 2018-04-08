@@ -18,6 +18,7 @@ void inserirK(int n, int posicao, tno **inicio); //insere valor na posicao desej
 void inserirDepois(int x, int n, tno **inicio);  // insere um novo valor depois de outro valor desejado
 void inserirAntes(int x, int n, tno **inicio);   // insere um novo valor antes de outro valor desejado
 void inserirOrdenado(int n, tno **inicio); // insere um valor na lista de forma crescente
+void inserirOrdenadoDecr(int n, tno **inicio); // insere um valor na lista de forma decrescente
 
 void excluirInicio(tno **inicio); //exclui um elemento do inicio
 void excluirFinal(tno **inicio);  //exclui um elemento do fim
@@ -40,7 +41,8 @@ void concatena(tno **A, tno *B);	 // junta a lista B com a lista A
 int iguais(tno *A, tno *B);			 // verifica se as listas sao iguais retorna 1 se sim e 0 se nao
 tno *uniao(tno *A, tno *B);			 //faz a uniao entr duas listas (exclui valores repetidos)
 tno *interseccao(tno *A, tno *B);	 // faz a interseccao de duas listas (exclui os valores diferentes)
-void ordenar(tno **inicio);
+void ordenar(tno **inicio);			 // Ordena lista de forma crescente
+void ordenarDrec(tno **inicio);		 // Ordena lista de forma decrescente
 
 void main() {
 	tno *lista = NULL;
@@ -66,7 +68,15 @@ void main() {
 	imprime(lista);
 
 	inserirOrdenado(5, &lista);
+
+	inserirInicio(4, &lista);
+	inserirFinal(2, &lista);
+
+	inserirOrdenadoDecr(8, &lista);
+	inserirOrdenadoDecr(3, &lista);
+	inserirOrdenadoDecr(1, &lista);
 	**/
+
 	inserirInicio(n, &lista);
 	inserirInicio(15, &lista);
 	inserirInicio(16, &lista);
@@ -80,11 +90,17 @@ void main() {
 	printf("-----lista-----\n");
 	imprime(lista);
 
+	ordenarDrec(&lista);
+
+	printf("-----lista ordenada de forma descente -----\n");
+	imprime(lista);
+
+	/**
 	ordenar(&lista);
 
 	printf("-----lista ordenada-----\n");
 	imprime(lista);
-	/**
+	
 	inserirDepois(6, 2, &lista);
 	inserirDepois(7, 15, &lista);
 	inserirDepois(8, 0, &lista);
@@ -559,6 +575,42 @@ void ordenar(tno **inicio) {
 		inserirOrdenado((*inicio)->info, &(aux));
 		(*inicio) = (*inicio)->prox;
 
+	}
+	copia(aux, &(*inicio));
+}
+
+void inserirOrdenadoDecr(int n, tno **inicio){
+	int cont = 0;
+	tno *aux = NULL;
+	copia((*inicio), &aux);
+	if ((*inicio) == NULL) {
+		inserirInicio(n, &(*inicio));
+	}
+	else {
+		if (n > (aux)->info) {
+			inserirInicio(n, &(*inicio));
+		}
+		else {
+			while ((aux)->prox != NULL) {
+				if ((n <(aux)->info) && (n > (aux->prox)->info)) {
+					cont++;
+					inserirDepois(n, (aux)->info, &(*inicio));
+				}
+
+				(aux) = (aux)->prox;
+			}
+			if (cont == 0) {
+				inserirFinal(n, &(*inicio));
+			}
+		}
+	}
+}
+
+void ordenarDrec(tno **inicio) {
+	tno *aux = NULL;
+	while ((*inicio) != NULL) {
+		inserirOrdenadoDecr((*inicio)->info, &(aux));
+		(*inicio) = (*inicio)->prox;
 	}
 	copia(aux, &(*inicio));
 }
