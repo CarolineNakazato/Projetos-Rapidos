@@ -1,0 +1,16 @@
+(defun tam+1 (l) ; cria uma nova lista com a quantidade de elementos da lista anterior +1 preenchendo os valores com t
+	(if(null (car l))
+		(cons t NIL)
+		(cons t (tam+1 (cdrl)))
+	)
+)
+
+(DEFUN MUDA (A1 A2 L) ;troca o elemento A1 pelo elemento A2 em uma lista simples
+	(IF(NULL (CAR L))
+		NIL
+		(IF(EQL A1 (CAR L))
+			(CONS A2 (MUDA A1 A2 (CDR L)))
+			(CONS (CAR L) (MUDA A1 A2 (CDR L)))
+		)
+	)
+)
