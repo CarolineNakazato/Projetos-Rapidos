@@ -6,82 +6,80 @@
 #include <math.h>
 #define TOTALVERTICES 8
 
-typedef struct item {
-	int campo;
-	struct item* prox;
-}ITEM;
+typedef struct mapa {
+	int lugar;
+	char rua[50];
+	int metros;
+	struct mapa* prox;
+}MAPA;
 
-ITEM lista[TOTALVERTICES + 1];
+MAPA lista[TOTALVERTICES + 1];
 
-void Imprimir(ITEM *lista);
-void Inserir_Aresta(ITEM *lista, int a, int b);
+void Imprimir(MAPA *lista);
+void Inserir_Aresta(MAPA *lista, int posicao, int lugar, char rua[], int metros);
 
 int main(int argc, char *argv[]) {
-	int i, a, b;
 
-	FILE *fp;
-	fp = fopen("arq.txt", "r");
-	if (!fp) {
-		printf("Erro ao abrir o arquivo %s.\n", argv[1]);
-		return 0;
-	}
+	int i;
 
 	// Inicialização da lista. 
 	for (i = 1; i <= TOTALVERTICES; i++) {
-		lista[i].campo = 0;
+		lista[i].lugar = 0;
+		strcpy(lista[i].rua, "rua 0");
+		lista[i].metros = 0;
 		lista[i].prox = NULL;
 	}
 
-	//leitura dos vertices (a,b) - passagem para a função Inserir_Aresta.
-	fscanf(fp, "%d %d", &a, &b);
-	while (!feof(fp)) {
-		Inserir_Aresta(lista, a, b);
-		Inserir_Aresta(lista, b, a);
-		fscanf(fp, "%d%d", &a, &b);
-	}
+	Inserir_Aresta(lista, 0, 0, "rua 0", 50);
+	Inserir_Aresta(lista, 0, 1, "rua 2", 50);
+	Inserir_Aresta(lista, 1, 1, "rua 1", 75);
 
 	Imprimir(lista);
 	system("pause");
 }
 
 
-void Imprimir(ITEM *lista) {
+void Imprimir(MAPA *lista) {
 	int i;
-	ITEM * tmp;
-	for (i = 1; i <= TOTALVERTICES; i++) {
+	MAPA * tmp;
+	for (i = 0; i <= 3; i++) {
 		tmp = lista[i].prox;
-		printf("%2d: (%d) ==>", i, lista[i].campo);
+
 		while (tmp != NULL) {
-			printf("%d  ", tmp->campo);
+			printf("posicao = %d, lugar = %d, rua = %s, metros = %d\n", i, tmp->lugar, tmp->rua, tmp->metros);
+			//printf("%d  ", tmp->lugar);
 			tmp = tmp->prox;
 		}
 		printf("\n");
 	}
 }
 
-void Inserir_Aresta(ITEM *lista, int a, int b) {
-	ITEM *aux;
-	ITEM *tmp;
+void Inserir_Aresta(MAPA *lista, int posicao, int lugar, char rua[], int metros) {
+	MAPA *aux;
+	MAPA *tmp;
 
-	aux = (ITEM*)malloc((int)sizeof(ITEM));    //retorno de um ponteiro genérico.
-	aux->campo = b;
+	aux = (MAPA*)malloc((int)sizeof(MAPA));    //retorno de um ponteiro genérico.
+	aux->lugar = lugar;
+	strcpy(aux->rua, rua);
+	aux->metros = metros;
 	aux->prox = NULL;
 
-	lista[a].campo++;
-	if (lista[a].prox == NULL) // Caso a lista estiver vazia - Insere.	
-		lista[a].prox = aux;
+	lista[posicao].lugar++;
+	if (lista[posicao].prox == NULL) // Caso a lista estiver vazia - Insere.	
+		lista[posicao].prox = aux;
 	else {
-		tmp = lista[a].prox;
-		if (tmp->campo > b) { //insere como primeiro da lista
+		printf("lista[posicao].prox = %d\n", lista[posicao].prox->lugar);
+		tmp = lista[posicao].prox;
+		if (tmp->lugar > lugar) { //da erro aqui quando tira do global como se tmp estivesse null mas nao esta deve ter lixo
 			aux->prox = tmp;
-			lista[a].prox = aux;
+			lista[posicao].prox = aux;
 		} 		          //insere os vértices ordenados
 		else if (tmp->prox == NULL) {
 			aux->prox = tmp->prox;
 			tmp->prox = aux;
 		}
 		else {
-			while ((tmp->prox != NULL) && (tmp->prox->campo < b))
+			while ((tmp->prox != NULL) && (tmp->prox->lugar < lugar))
 				tmp = tmp->prox;
 			aux->prox = tmp->prox;
 			tmp->prox = aux;
